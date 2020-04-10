@@ -28,6 +28,18 @@ audreyr Sample Lib
      :target: https://requires.io/github/tomestro/asamplelib/requirements/?branch=master
      :alt: Requirements Status
 
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=tomestro_asamplelib&metric=alert_status
+        :target: https://sonarcloud.io/dashboard?id=tomestro_asamplelib
+        :alt: Quality Gate Status
+
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=tomestro_asamplelib&metric=reliability_rating
+        :target: https://sonarcloud.io/dashboard?id=tomestro_asamplelib
+        :alt: Reliability Rating
+
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=tomestro_asamplelib&metric=security_rating
+        :target: https://sonarcloud.io/dashboard?id=tomestro_asamplelib
+        :alt: Security Rating
+
 
 
 Python Boilerplate contains all the boilerplate you need to create a Python package.
