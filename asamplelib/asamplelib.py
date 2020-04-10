@@ -1,5 +1,4 @@
 """Main module."""
-# import sys
 
 
 def sample_func(value):
