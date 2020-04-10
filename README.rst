@@ -35,3 +35,8 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+.. image:: https://api.codacy.com/project/badge/Grade/1039fc84654a45128f4fe55013810d25
+   :alt: Codacy Badge
+   :target: https://app.codacy.com/manual/tomestro/asamplelib?utm_source=github.com&utm_medium=referral&utm_content=tomestro/asamplelib&utm_campaign=Badge_Grade_Dashboard
