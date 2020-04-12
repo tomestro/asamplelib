@@ -1,4 +1,0 @@
--r requirements_dev.txt
-
-black==19.10b0
-pre-commit==2.2.0
