@@ -28,7 +28,6 @@ help:
 
 init-dev: ## initialize development environment: install dependencies from Pipfile and install git hooks
 	pipenv install --dev
-	pipenv install pre-commit --dev
 	pipenv run pre-commit install -t pre-commit
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
