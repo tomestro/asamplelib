@@ -28,6 +28,9 @@ def test_inc():
     assert asamplelib.inc(1) == 2
 
 
+def test_dec():
+    assert asamplelib.dec(2) == 2
+
 def test_sum():
     assert asamplelib.sum(3, 4) == 7
 
