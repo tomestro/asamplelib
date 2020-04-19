@@ -7,7 +7,7 @@ python:
   - 3.6
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: 
+install:
   - pip install -U tox-travis
   - pip install -U coverage
   - pip install -U coveralls
@@ -22,11 +22,9 @@ script:
   - coverage run --source asamplelib -m pytest
   - coverage report -m
 
-after_success:
+after_script:
   - coveralls
   - codecov
-
-after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # Assuming you have installed the travis-ci CLI tool, after you
