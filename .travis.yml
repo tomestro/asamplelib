@@ -12,6 +12,9 @@ install:
   - pip install -U coverage
   - pip install -U coveralls
   - pip install -U codecov
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 # Command to run tests, e.g. python setup.py test
 script:
@@ -22,6 +25,9 @@ script:
 after_success:
   - coveralls
   - codecov
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # Assuming you have installed the travis-ci CLI tool, after you
 # create the Github repo and add it to Travis, run the
