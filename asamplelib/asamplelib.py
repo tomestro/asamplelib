@@ -14,6 +14,12 @@ def inc(x):
     """
     return x + 1
 
+def dec(x):
+    """
+    Decrease
+    """
+    return inc(-1)
+
 
 def sum(a, b):
     """
