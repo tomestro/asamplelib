@@ -4,17 +4,20 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+bump2version = "*"
 wheel = "*"
 watchdog = "*"
 flake8 = "*"
 tox = "*"
 coverage = "*"
-pytest = "*"
-pytest-runner = "*"
 Sphinx = "*"
 twine = "*"
-bump2version = "*"
 pre-commit = "*"
+
+pytest = "*"
+pytest-runner = "*"
+black = "==19.10b0"
+isort = "*"
 
 [packages]
 
