@@ -5,7 +5,7 @@ stages:
   - test
   - name: deploy
     # require the branch name to be master (note for PRs this is the base branch name)
-    if: tag =~ /^v)/
+    if: tag is present
 jobs:
   include:
     - python: "3.8"
@@ -21,7 +21,7 @@ jobs:
     - stage: deploy
       python: 3.8
       script: skip     # usually you do not want to rerun any tests
-      before-deploy:
+      before_deploy:
         - poetry config http-basic.mypypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
