@@ -1,6 +1,11 @@
 # Config file for automatic testing at travis-ci.com
 
 language: python
+stages:
+  - test
+  - name: deploy
+    # require the branch name to be master (note for PRs this is the base branch name)
+    if: tag =~ /^v)/
 jobs:
   include:
     - python: "3.8"
