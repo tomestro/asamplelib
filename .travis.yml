@@ -35,12 +35,13 @@ after_script:
 
 before-deploy:
   - poetry config http-basic.mypypi $MYPYPI_USER $MYPYPI_PASS
+  - poetry config repositories.testpypi https://test.pypi.org/legacy/
   - poetry build
 
 deploy:
   skip_cleanup: true
   provider: script
-  script: poetry publish
+  script: poetry publish -r testpypi
   on:
     tags: true
     repo: tomestro/asamplelib
