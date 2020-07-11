@@ -1,6 +1,10 @@
 """Main module."""
 
 
+def sayHello():
+    print("Hello world!")
+
+
 def sample_func(value):
     """
     Sample function
