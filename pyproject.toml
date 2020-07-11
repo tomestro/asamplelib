@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "asamplelib"
-version = "0.2.2"
+version = "0.2.3"
 description = "Python Boilerplate contains all the "
 authors = ["Tomestro <tomestro@gmx.net>"]
 license = "Apache Software License 2.0"
