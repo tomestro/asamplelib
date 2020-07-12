@@ -5,19 +5,19 @@ stages:
   - test
   - name: deploy
     # require the branch name to be master (note for PRs this is the base branch name)
-    if: tag is present
+ #   if: tag is present
 jobs:
   include:
-    - python: "3.8"
+#    - python: "3.8"
     - python: "3.7"
-    - python: "3.6"
-    - name: "Python 3.8 on Windows"
-      os: windows
-      language: shell       # 'language: python' is an error on Travis CI Windows
-      before_install:
-        - choco install python --version 3.8.0
-        - python -m pip install --upgrade pip
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+#    - python: "3.6"
+#    - name: "Python 3.8 on Windows"
+#      os: windows
+#      language: shell       # 'language: python' is an error on Travis CI Windows
+#      before_install:
+#        - choco install python --version 3.8.0
+#        - python -m pip install --upgrade pip
+#      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
     - stage: deploy
       python: 3.8
       script: skip     # usually you do not want to rerun any tests
@@ -26,6 +26,7 @@ jobs:
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry build
+        - apt-get -y install tree
         - tree
         - poetry run pyinstaller --log-level=DEBUG  asamplelib/cli.py -n asamplelib --onefile
       deploy:
