@@ -1,5 +1,5 @@
 # Config file for automatic testing at travis-ci.com
-sudo: true
+
 language: python
 stages:
   - test
@@ -26,8 +26,7 @@ jobs:
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry build
-        - apt-get -y install tree
-        - tree
+        - ls -R
         - poetry run pyinstaller --log-level=DEBUG  asamplelib/cli.py -n asamplelib --onefile
       deploy:
         - provider: script
