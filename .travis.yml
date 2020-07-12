@@ -26,7 +26,8 @@ jobs:
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry build
-        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - tree
+        - poetry run pyinstaller --log-level=DEBUG  asamplelib/cli.py -n asamplelib --onefile
       deploy:
         - provider: script
           skip_cleanup: true
