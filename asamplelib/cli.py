@@ -2,7 +2,10 @@
 import argparse
 import sys
 
-import asamplelib
+# import asamplelib
+from asamplelib import asamplelib as asa
+
+# from asamplelib.asamplelib import sayHello, sum
 
 
 def main():
@@ -13,8 +16,8 @@ def main():
 
     print("Arguments: " + str(args._))
 
-    asamplelib.sayHello()
-    print("3 + 5 = " + str(asamplelib.sum(3, 5)))
+    asa.sayHello()
+    print("3 + 5 = " + str(asa.sum(3, 5)))
 
     return 0
 
