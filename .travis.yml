@@ -26,14 +26,23 @@ jobs:
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry build
+        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
       deploy:
-        skip_cleanup: true
-        provider: script
-        script: poetry publish -r testpypi
-        on:
-          tags: true
-          repo: tomestro/asamplelib
-          branch: master
+        - provider: script
+          skip_cleanup: true
+          script: poetry publish -r testpypi
+          on:
+            tags: true
+            repo: tomestro/asamplelib
+            branch: master
+        - provider: releases
+          skip_cleanup: true
+          api_key: $GITHUB_RELEASE_TOKEN
+          file: dist/asamplelib
+          on:
+            tags: true
+            repo: tomestro/asamplelib
+            branch: master
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
