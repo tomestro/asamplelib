@@ -27,7 +27,7 @@ jobs:
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry build
         - ls -R
-        - poetry run pyinstaller --log-level=DEBUG  asamplelib/cli.py -n asamplelib --onefile
+        - poetry run pyinstaller --log-level=DEBUG  asamplelib.spec -onefile
       deploy:
         - provider: script
           skip_cleanup: true
