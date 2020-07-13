@@ -28,7 +28,7 @@ jobs:
         - poetry install -v
         - poetry build
         - ls -R
-        - poetry run pyinstaller --log-level=DEBUG  asamplelib.spec -onefile
+        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
       deploy:
         - provider: script
           skip_cleanup: true
@@ -57,7 +57,7 @@ jobs:
         - poetry install -v
         - poetry build
         - ls -R
-        - poetry run pyinstaller --log-level=DEBUG  asamplelib.spec -onefile
+        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
       deploy:
         - provider: releases
           skip_cleanup: true
