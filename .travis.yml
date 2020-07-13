@@ -20,13 +20,12 @@ jobs:
 #      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
     - stage: deploy
       python: 3.7
-      install:
-        - poetry install -v
       script: skip     # usually you do not want to rerun any tests
       before_deploy:
         - poetry config http-basic.mypypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
+        - poetry install -v
         - poetry build
         - ls -R
         - poetry run pyinstaller --log-level=DEBUG  asamplelib.spec -onefile
@@ -53,10 +52,9 @@ jobs:
         - choco install python --version 3.7.0
         - python -m pip install --upgrade pip
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      install:
-        - poetry install -v
       script: skip     # usually you do not want to rerun any tests
       before_deploy:
+        - poetry install -v
         - poetry build
         - ls -R
         - poetry run pyinstaller --log-level=DEBUG  asamplelib.spec -onefile
