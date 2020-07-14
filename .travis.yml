@@ -42,7 +42,7 @@ jobs:
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
-          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.*
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
             repo: tomestro/asamplelib
@@ -60,11 +60,13 @@ jobs:
         - poetry build
         - ls -R
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - zip cvzf asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip asamplelib
+        - sha256sum asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
       deploy:
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
-          file: dist/asamplelib.exe
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
             repo: tomestro/asamplelib
