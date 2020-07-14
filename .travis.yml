@@ -29,6 +29,8 @@ jobs:
         - poetry build
         - ls -R
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - tar cvzf asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz asamplelib
+        - sha256sum asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
       deploy:
         - provider: script
           skip_cleanup: true
@@ -40,7 +42,7 @@ jobs:
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
-          file: dist/asamplelib
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.*
           on:
             tags: true
             repo: tomestro/asamplelib
