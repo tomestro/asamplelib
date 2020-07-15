@@ -61,9 +61,10 @@ jobs:
         - poetry build
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
         - ls -R dist
-        - powershell -Command Compress-Archive -Path ./dist/asamplelib.exe -DestinationPath ./dist/asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip
+        - 7z a dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip dist/asamplelib.exe
         - ls -R dist
-        - sha256sum .\\dist\\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip > .\\dist\\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip.sha256
+        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
+        - ls -R dist
       deploy:
         - provider: releases
           skip_cleanup: true
