@@ -43,7 +43,7 @@ jobs:
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
           file_glob: true
-          file: dist/asamplelib-*
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
             repo: tomestro/asamplelib
@@ -61,15 +61,15 @@ jobs:
         - poetry build
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
         - ls -R dist
-        - powershell -Command Compress-Archive -Path .\dist\asamplelib.exe -DestinationPath .\dist\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip
+        - powershell -Command Compress-Archive -Path .\\dist\\asamplelib.exe -DestinationPath .\\dist\\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip
         - ls -R dist
-        - sha256sum .\dist\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip > .\dist\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip.sha256
+        - sha256sum .\\dist\\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip > .\\dist\\asamplelib-$Env:TRAVIS_TAG-$Env:TRAVIS_OS_NAME-$Env:TRAVIS_CPU_ARCH.zip.sha256
       deploy:
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
           file_glob: true
-          file: dist/asamplelib-*
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
             repo: tomestro/asamplelib
