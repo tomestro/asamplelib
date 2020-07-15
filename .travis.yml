@@ -27,10 +27,10 @@ jobs:
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry install -v
         - poetry build
-        - ls -R
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
-        - tar cvzf asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz asamplelib
-        - sha256sum asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
+        - tar cvzf dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz dist/asamplelib
+        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
+        - ls -R
       deploy:
         - provider: script
           skip_cleanup: true
@@ -58,10 +58,10 @@ jobs:
       before_deploy:
         - poetry install -v
         - poetry build
-        - ls -R
         - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
-        - zip cvzf asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip asamplelib
-        - sha256sum asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
+        - powershell -Command Compress-Archive -Path .\dist\asamplelib.exe -DestinationPath .\dist\asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip
+        - sha256sum .\dist\asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > .\dist\asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
+        - ls -R
       deploy:
         - provider: releases
           skip_cleanup: true
