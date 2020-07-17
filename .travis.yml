@@ -1,43 +1,96 @@
 # Config file for automatic testing at travis-ci.com
 
 language: python
-python:
-  - 3.8
-  - 3.7
-  - 3.6
+stages:
+  - test
+  - name: deploy
+    # require the branch name to be master (note for PRs this is the base branch name)
+    if: tag is present
+jobs:
+  include:
+    - python: "3.8"
+    - python: "3.7"
+    - python: "3.6"
+    - name: "Python 3.8 on Windows"
+      os: windows
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version 3.8.0
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+    - stage: deploy
+      python: 3.7
+      script: skip     # usually you do not want to rerun any tests
+      before_deploy:
+        - poetry config http-basic.mypypi $MYPYPI_USER $MYPYPI_PASS
+        - poetry config http-basic.testpypi $MYPYPI_USER $MYPYPI_PASS
+        - poetry config repositories.testpypi https://test.pypi.org/legacy/
+        - poetry install -v
+        - poetry build
+        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - tar cvzf dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz dist/asamplelib
+        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
+        - ls -R dist
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script: poetry publish -r testpypi
+          on:
+            tags: true
+            repo: tomestro/asamplelib
+            branch: master
+        - provider: releases
+          skip_cleanup: true
+          api_key: $GITHUB_RELEASE_TOKEN
+          file_glob: true
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
+          on:
+            tags: true
+            repo: tomestro/asamplelib
+            branch: master
+    - stage: deploy
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.7.0
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      script: skip     # usually you do not want to rerun any tests
+      before_deploy:
+        - poetry install -v
+        - poetry build
+        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - ls -R dist
+        - 7z a dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip dist/asamplelib.exe
+        - ls -R dist
+        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
+        - ls -R dist
+      deploy:
+        - provider: releases
+          skip_cleanup: true
+          api_key: $GITHUB_RELEASE_TOKEN
+          file_glob: true
+          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
+          on:
+            tags: true
+            repo: tomestro/asamplelib
+            branch: master
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
+  - pip install -U poetry
   - pip install -U tox-travis
-  - pip install -U coverage
   - pip install -U coveralls
   - pip install -U codecov
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter before-build; fi
 
 # Command to run tests, e.g. python setup.py test
 script:
   - tox
-  - coverage run --source asamplelib -m pytest
-  - coverage report -m
 
 after_script:
   - coveralls
   - codecov
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
-deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  user: tomestro
-  password:
-    secure: PLEASE_REPLACE_ME
-  on:
-    tags: true
-    repo: tomestro/asamplelib
-    python: 3.8
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi

@@ -8,7 +8,7 @@ audreyr Sample Lib
     :stub-columns: 1
 
     * - build
-      - |travis| |appveyor|
+      - |travis|
     * - quality
       - |codacy| |codeclimate| |sonar-qg| |sonar-rel| |scrutinizer|
     * - coverage

@@ -27,8 +27,8 @@ help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 init-dev: ## initialize development environment: install dependencies from Pipfile and install git hooks
-	pipenv install --dev
-	pipenv run pre-commit install -t pre-commit
+	poetry install -v
+	poetry run pre-commit install -t pre-commit
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -52,38 +52,42 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	pipenv run flake8 asamplelib tests
+	poetry run flake8 asamplelib tests
+
+format: ## run autoformat with isort and black
+	poetry run isort
+	poetry run black asamplelib tests
 
 test: ## run tests quickly with the default Python
-	pipenv run pytest
+	poetry run pytest
 
 test-all: ## run tests on every Python version with tox
-	pipenv run tox
+	poetry run tox
 
 coverage: ## check code coverage quickly with the default Python
-	pipenv run coverage run --source asamplelib -m pytest
-	pipenv run coverage report -m
-	pipenv run coverage html
+	poetry run coverage run --source asamplelib -m pytest
+	poetry run coverage report -m
+	poetry run coverage html
 	$(BROWSER) htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/asamplelib.rst
 	rm -f docs/modules.rst
-	pipenv run sphinx-apidoc -o docs/ asamplelib
+	poetry run sphinx-apidoc -o docs/ asamplelib
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
 servedocs: docs ## compile the docs watching for changes
-	pipenv run watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+	poetry run watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-release: dist ## package and upload a release
-	pipenv run twine upload dist/*
+release: dist ## package and upload a release to PyPI
+	poetry publish
 
-dist: clean ## builds source and wheel package
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
+dist: clean ## builds source and wheel package as well as stand-alone executable
+	poetry build
+	poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	pipenv run python setup.py install
+	poetry install
