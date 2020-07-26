@@ -61,7 +61,7 @@ jobs:
         - poetry build
         - poetry run pyinstaller $MY_GH_REPO_NAME/cli.py -n $MY_GH_REPO_NAME --onefile
         - ls -R dist
-        - 7z a dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip dist/$MY_GH_REPO_NAME.exe
+        - 7z a dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip ./dist/$MY_GH_REPO_NAME.exe
         - ls -R dist
         - sha256sum dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
         - ls -R dist
