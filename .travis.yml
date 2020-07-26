@@ -78,6 +78,8 @@ jobs:
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
+  - export MY_GH_OWNER_NAME=$(echo ${TRAVIS_REPO_SLUG} | cut -f 1 -d /)
+  - export MY_GH_REPO_NAME=$(echo ${TRAVIS_REPO_SLUG} | cut -f 2 -d /)
   - pip install -U poetry
   - pip install -U tox-travis
   - pip install -U coveralls
