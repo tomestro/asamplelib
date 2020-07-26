@@ -27,9 +27,9 @@ jobs:
         - poetry config repositories.testpypi https://test.pypi.org/legacy/
         - poetry install -v
         - poetry build
-        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
-        - tar cvzf dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz dist/asamplelib
-        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
+        - poetry run pyinstaller $MY_GH_REPO_NAME/cli.py -n $MY_GH_REPO_NAME --onefile
+        - tar cvzf dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz dist/$MY_GH_REPO_NAME
+        - sha256sum dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz > dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.tar.gz.sha256
         - ls -R dist
       deploy:
         - provider: script
@@ -37,16 +37,16 @@ jobs:
           script: poetry publish -r testpypi
           on:
             tags: true
-            repo: tomestro/asamplelib
+            repo: $TRAVIS_REPO_SLUG
             branch: master
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
           file_glob: true
-          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
+          file: dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
-            repo: tomestro/asamplelib
+            repo: $TRAVIS_REPO_SLUG
             branch: master
     - stage: deploy
       os: windows
@@ -59,21 +59,21 @@ jobs:
       before_deploy:
         - poetry install -v
         - poetry build
-        - poetry run pyinstaller asamplelib/cli.py -n asamplelib --onefile
+        - poetry run pyinstaller $MY_GH_REPO_NAME/cli.py -n $MY_GH_REPO_NAME --onefile
         - ls -R dist
-        - 7z a dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip dist/asamplelib.exe
+        - 7z a dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip dist/$MY_GH_REPO_NAME.exe
         - ls -R dist
-        - sha256sum dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
+        - sha256sum dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip > dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.zip.sha256
         - ls -R dist
       deploy:
         - provider: releases
           skip_cleanup: true
           api_key: $GITHUB_RELEASE_TOKEN
           file_glob: true
-          file: dist/asamplelib-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
+          file: dist/$MY_GH_REPO_NAME-$TRAVIS_TAG-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.*
           on:
             tags: true
-            repo: tomestro/asamplelib
+            repo: $TRAVIS_REPO_SLUG
             branch: master
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
